@@ -1,0 +1,34 @@
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+    
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24'
+    
+      - name: Verify dependencies
+        run: go mod verify
+      
+      - name: Build
+        run: go build -v ./cmd/lancache-dns-sync
+      
+      - name: Run tests
+        run: go test -v ./...
+      
+      - name: Run go vet
+        run: go vet ./...
