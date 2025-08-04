@@ -25,4 +25,5 @@ policies:
           - release
           - deps
           - ci
+          - container
         descriptionLength: 100
