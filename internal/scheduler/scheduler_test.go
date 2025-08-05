@@ -19,10 +19,10 @@ func TestParseSyncInterval(t *testing.T) {
 		{"24 hours", "24h", 24 * time.Hour, false},
 		{"1 day", "24h", 24 * time.Hour, false},
 		{"1 minute minimum", "1m", time.Minute, false},
-		
+
 		// Empty string should return default
 		{"empty string (default)", "", DefaultSyncInterval, false},
-		
+
 		// Invalid formats
 		{"invalid string", "invalid", DefaultSyncInterval, true},
 		{"negative duration", "-1h", DefaultSyncInterval, true},

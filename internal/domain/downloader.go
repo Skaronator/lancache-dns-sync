@@ -15,9 +15,9 @@ import (
 )
 
 const (
-	BaseURL         = "https://raw.githubusercontent.com/uklans/cache-domains/master/"
-	JSONPath        = "cache_domains.json"
-	MaxConcurrency  = 10
+	BaseURL        = "https://raw.githubusercontent.com/uklans/cache-domains/master/"
+	JSONPath       = "cache_domains.json"
+	MaxConcurrency = 10
 )
 
 type Downloader struct {

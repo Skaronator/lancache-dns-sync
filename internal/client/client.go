@@ -14,9 +14,8 @@ import (
 )
 
 type AdguardClient interface {
-	GetCurrentRewrites(ctx context.Context) (map[string]string, error)
-	AddRewrite(ctx context.Context, domain, answer string) error
-	DeleteRewrite(ctx context.Context, domain, answer string) error
+	GetFilteringStatus(ctx context.Context) (*types.FilterStatus, error)
+	SetFilteringRules(ctx context.Context, rules []string) error
 }
 
 type HTTPAdguardClient struct {
@@ -55,10 +54,10 @@ func (c *HTTPAdguardClient) makeRequest(ctx context.Context, method, endpoint st
 	return resp, nil
 }
 
-func (c *HTTPAdguardClient) GetCurrentRewrites(ctx context.Context) (map[string]string, error) {
-	resp, err := c.makeRequest(ctx, "GET", "/control/rewrite/list", nil)
+func (c *HTTPAdguardClient) GetFilteringStatus(ctx context.Context) (*types.FilterStatus, error) {
+	resp, err := c.makeRequest(ctx, "GET", "/control/filtering/status", nil)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get rewrites: %w", err)
+		return nil, fmt.Errorf("failed to get filtering status: %w", err)
 	}
 	defer func() {
 		if closeErr := resp.Body.Close(); closeErr != nil {
@@ -67,32 +66,27 @@ func (c *HTTPAdguardClient) GetCurrentRewrites(ctx context.Context) (map[string]
 	}()
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("failed to get rewrites: status %d", resp.StatusCode)
+		return nil, fmt.Errorf("failed to get filtering status: status %d", resp.StatusCode)
 	}
 
-	var rewrites []types.DNSRewrite
-	if err := json.NewDecoder(resp.Body).Decode(&rewrites); err != nil {
-		return nil, fmt.Errorf("failed to decode rewrites response: %w", err)
+	var status types.FilterStatus
+	if err := json.NewDecoder(resp.Body).Decode(&status); err != nil {
+		return nil, fmt.Errorf("failed to decode filtering status response: %w", err)
 	}
 
-	result := make(map[string]string)
-	for _, rewrite := range rewrites {
-		result[rewrite.Domain] = rewrite.Answer
-	}
-
-	return result, nil
+	return &status, nil
 }
 
-func (c *HTTPAdguardClient) AddRewrite(ctx context.Context, domain, answer string) error {
-	rewrite := types.DNSRewrite{Domain: domain, Answer: answer}
-	jsonData, err := json.Marshal(rewrite)
+func (c *HTTPAdguardClient) SetFilteringRules(ctx context.Context, rules []string) error {
+	request := types.SetRulesRequest{Rules: rules}
+	jsonData, err := json.Marshal(request)
 	if err != nil {
-		return fmt.Errorf("failed to marshal rewrite: %w", err)
+		return fmt.Errorf("failed to marshal rules request: %w", err)
 	}
 
-	resp, err := c.makeRequest(ctx, "POST", "/control/rewrite/add", bytes.NewBuffer(jsonData))
+	resp, err := c.makeRequest(ctx, "POST", "/control/filtering/set_rules", bytes.NewBuffer(jsonData))
 	if err != nil {
-		return fmt.Errorf("failed to add rewrite: %w", err)
+		return fmt.Errorf("failed to set filtering rules: %w", err)
 	}
 	defer func() {
 		if closeErr := resp.Body.Close(); closeErr != nil {
@@ -101,31 +95,7 @@ func (c *HTTPAdguardClient) AddRewrite(ctx context.Context, domain, answer strin
 	}()
 
 	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("failed to add rewrite for %s: status %d", domain, resp.StatusCode)
-	}
-
-	return nil
-}
-
-func (c *HTTPAdguardClient) DeleteRewrite(ctx context.Context, domain, answer string) error {
-	rewrite := map[string]string{"domain": domain, "answer": answer}
-	jsonData, err := json.Marshal(rewrite)
-	if err != nil {
-		return fmt.Errorf("failed to marshal delete request: %w", err)
-	}
-
-	resp, err := c.makeRequest(ctx, "POST", "/control/rewrite/delete", bytes.NewBuffer(jsonData))
-	if err != nil {
-		return fmt.Errorf("failed to delete rewrite: %w", err)
-	}
-	defer func() {
-		if closeErr := resp.Body.Close(); closeErr != nil {
-			slog.Error("Failed to close response body", "error", closeErr)
-		}
-	}()
-
-	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("failed to delete rewrite for %s: status %d", domain, resp.StatusCode)
+		return fmt.Errorf("failed to set filtering rules: status %d", resp.StatusCode)
 	}
 
 	return nil

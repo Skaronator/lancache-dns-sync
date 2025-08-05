@@ -27,23 +27,23 @@ func TestRunOnceEnvironmentVariable(t *testing.T) {
 			if err := os.Unsetenv("RUN_ONCE"); err != nil {
 				t.Fatalf("Failed to unset RUN_ONCE: %v", err)
 			}
-			
+
 			// Set test value
 			if tt.envValue != "" {
 				if err := os.Setenv("RUN_ONCE", tt.envValue); err != nil {
 					t.Fatalf("Failed to set RUN_ONCE: %v", err)
 				}
 			}
-			
+
 			// Mock flag parsing
 			runOnce := false
-			
+
 			// Simulate the environment variable check logic from main()
 			runOnceEnv := os.Getenv("RUN_ONCE")
 			if runOnceEnv == "true" || runOnceEnv == "1" || runOnceEnv == "yes" {
 				runOnce = true
 			}
-			
+
 			if runOnce != tt.expected {
 				t.Errorf("Expected runOnce to be %v for env value '%s', got %v", tt.expected, tt.envValue, runOnce)
 			}

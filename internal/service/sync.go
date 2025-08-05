@@ -46,45 +46,67 @@ func (s *SyncService) SyncDomains(ctx context.Context) error {
 
 	slog.Info("Downloaded domain entries", "count", len(rewrites))
 
-	if err := s.updateDNSRewrites(ctx, rewrites); err != nil {
-		return fmt.Errorf("failed to update DNS rewrites: %w", err)
+	if err := s.updateFilteringRules(ctx, rewrites); err != nil {
+		return fmt.Errorf("failed to update filtering rules: %w", err)
 	}
 
-	slog.Info("DNS rewrites updated successfully")
+	slog.Info("Filtering rules updated successfully")
 	return nil
 }
 
-func (s *SyncService) updateDNSRewrites(ctx context.Context, rewrites []types.DNSRewrite) error {
-	currentRewrites, err := s.client.GetCurrentRewrites(ctx)
+const (
+	startMarker = "# lancache-dns-sync start"
+	endMarker   = "# lancache-dns-sync end"
+)
+
+func (s *SyncService) updateFilteringRules(ctx context.Context, rewrites []types.DNSRewrite) error {
+	status, err := s.client.GetFilteringStatus(ctx)
 	if err != nil {
-		return fmt.Errorf("failed to get current rewrites: %w", err)
+		return fmt.Errorf("failed to get filtering status: %w", err)
 	}
 
-	slog.Info("Processing DNS rewrites", "count", len(rewrites))
+	slog.Info("Processing filtering rules", "count", len(rewrites))
+
+	existingRules := status.UserRules
+	preservedRules := extractNonManagedRules(existingRules)
+
+	newRules := []string{}
+	newRules = append(newRules, preservedRules...)
+	newRules = append(newRules, startMarker)
 
 	for _, rewrite := range rewrites {
-		currentAnswer, exists := currentRewrites[rewrite.Domain]
+		rule := fmt.Sprintf("|%s^$dnsrewrite=NOERROR;A;%s,important", rewrite.Domain, rewrite.Answer)
+		newRules = append(newRules, rule)
+		slog.Debug("Adding DNS rewrite rule", "domain", rewrite.Domain, "answer", rewrite.Answer)
+	}
 
-		if exists {
-			if currentAnswer != rewrite.Answer {
-				slog.Info("Updating DNS rewrite", "domain", rewrite.Domain, "from", currentAnswer, "to", rewrite.Answer)
-				if err := s.client.DeleteRewrite(ctx, rewrite.Domain, currentAnswer); err != nil {
-					slog.Error("Error deleting rewrite", "domain", rewrite.Domain, "current_answer", currentAnswer, "error", err)
-					continue
-				}
-				if err := s.client.AddRewrite(ctx, rewrite.Domain, rewrite.Answer); err != nil {
-					slog.Error("Error adding rewrite", "domain", rewrite.Domain, "error", err)
-				}
-			} else {
-				slog.Info("DNS rewrite already up-to-date", "domain", rewrite.Domain, "answer", rewrite.Answer)
-			}
-		} else {
-			slog.Info("Adding new DNS rewrite", "domain", rewrite.Domain, "answer", rewrite.Answer)
-			if err := s.client.AddRewrite(ctx, rewrite.Domain, rewrite.Answer); err != nil {
-				slog.Error("Error adding rewrite", "domain", rewrite.Domain, "error", err)
-			}
+	newRules = append(newRules, endMarker)
+
+	if err := s.client.SetFilteringRules(ctx, newRules); err != nil {
+		return fmt.Errorf("failed to set filtering rules: %w", err)
+	}
+
+	slog.Info("Successfully updated filtering rules", "total_rules", len(rewrites))
+	return nil
+}
+
+func extractNonManagedRules(rules []string) []string {
+	preserved := []string{}
+	inManagedSection := false
+
+	for _, rule := range rules {
+		if rule == startMarker {
+			inManagedSection = true
+			continue
+		}
+		if rule == endMarker {
+			inManagedSection = false
+			continue
+		}
+		if !inManagedSection {
+			preserved = append(preserved, rule)
 		}
 	}
 
-	return nil
+	return preserved
 }
