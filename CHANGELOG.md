@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.2](https://github.com/Skaronator/lancache-dns-sync/compare/v0.1.1...v0.1.2) (2025-08-05)
+
+
+### Bug Fixes
+
+* wildcard redirect not working ([#14](https://github.com/Skaronator/lancache-dns-sync/issues/14)) ([5d7b86c](https://github.com/Skaronator/lancache-dns-sync/commit/5d7b86cc4fee3655c33603234bc2bb70315a9b1c))
+
+
+### Miscellaneous Chores
+
+* **deps:** pin alpine docker tag to 4bcff63 ([#12](https://github.com/Skaronator/lancache-dns-sync/issues/12)) ([a15c6e3](https://github.com/Skaronator/lancache-dns-sync/commit/a15c6e3dd3a1810177e1fea541326eeddf237754))
+
 ## [0.1.1](https://github.com/Skaronator/lancache-dns-sync/compare/v0.1.0...v0.1.1) (2025-08-04)
 
 
