@@ -13,3 +13,12 @@ type DNSRewrite struct {
 	Domain string `json:"domain"`
 	Answer string `json:"answer"`
 }
+
+type FilterStatus struct {
+	UserRules []string `json:"user_rules"`
+	Enabled   bool     `json:"enabled"`
+}
+
+type SetRulesRequest struct {
+	Rules []string `json:"rules"`
+}
