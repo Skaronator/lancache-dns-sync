@@ -5,6 +5,7 @@ import (
 	"errors"
 	"net"
 	"net/http"
+	"strings"
 	"testing"
 	"time"
 
@@ -64,7 +65,15 @@ func (s *testSyncService) updateFilteringRules(ctx context.Context, rewrites []t
 	newRules = append(newRules, startMarker)
 
 	for _, rewrite := range rewrites {
-		rule := "|" + rewrite.Domain + "^$dnsrewrite=NOERROR;A;" + rewrite.Answer + ",important"
+		var rule string
+		if strings.HasPrefix(rewrite.Domain, "*.") {
+			// For wildcard domains, use || to match domain and all subdomains
+			domain := strings.TrimPrefix(rewrite.Domain, "*.")
+			rule = "||" + domain + "^$dnsrewrite=NOERROR;A;" + rewrite.Answer + ",important"
+		} else {
+			// For exact domains, use | to match only that specific domain
+			rule = "|" + rewrite.Domain + "^$dnsrewrite=NOERROR;A;" + rewrite.Answer + ",important"
+		}
 		newRules = append(newRules, rule)
 	}
 
@@ -118,6 +127,88 @@ func TestExtractNonManagedRules(t *testing.T) {
 				"# lancache-dns-sync end",
 			},
 			expected: []string{},
+		},
+		{
+			name: "Empty markers at beginning - bug case",
+			input: []string{
+				"# lancache-dns-sync start",
+				"# lancache-dns-sync end",
+				"|aa.example.com^$dnsrewrite=NOERROR;A;192.168.0.250,important",
+				"|bb.example.com^$dnsrewrite=NOERROR;A;192.168.0.123,important",
+				"|cc.example.com^$dnsrewrite=NOERROR;A;192.168.0.123,important",
+			},
+			expected: []string{
+				"|aa.example.com^$dnsrewrite=NOERROR;A;192.168.0.250,important",
+				"|bb.example.com^$dnsrewrite=NOERROR;A;192.168.0.123,important",
+				"|cc.example.com^$dnsrewrite=NOERROR;A;192.168.0.123,important",
+			},
+		},
+		{
+			name: "Empty markers in middle",
+			input: []string{
+				"||custom1.com^",
+				"# lancache-dns-sync start",
+				"# lancache-dns-sync end",
+				"||custom2.com^",
+			},
+			expected: []string{
+				"||custom1.com^",
+				"||custom2.com^",
+			},
+		},
+		{
+			name: "Multiple marker sections",
+			input: []string{
+				"||before.com^",
+				"# lancache-dns-sync start",
+				"|managed1.com^$dnsrewrite=NOERROR;A;192.168.1.1,important",
+				"# lancache-dns-sync end",
+				"||middle.com^",
+				"# lancache-dns-sync start",
+				"|managed2.com^$dnsrewrite=NOERROR;A;192.168.1.2,important",
+				"# lancache-dns-sync end",
+				"||after.com^",
+			},
+			expected: []string{
+				"||before.com^",
+				"||middle.com^",
+				"||after.com^",
+			},
+		},
+		{
+			name: "Markers with no content between",
+			input: []string{
+				"# lancache-dns-sync start",
+				"# lancache-dns-sync end",
+			},
+			expected: []string{},
+		},
+		{
+			name: "Rules before empty markers",
+			input: []string{
+				"||rule1.com^",
+				"||rule2.com^",
+				"# lancache-dns-sync start",
+				"# lancache-dns-sync end",
+			},
+			expected: []string{
+				"||rule1.com^",
+				"||rule2.com^",
+			},
+		},
+		{
+			name: "Duplicate markers should be filtered",
+			input: []string{
+				"# lancache-dns-sync start",
+				"# lancache-dns-sync start",
+				"|managed.com^$dnsrewrite=NOERROR;A;192.168.1.1,important",
+				"# lancache-dns-sync end",
+				"# lancache-dns-sync end",
+				"||custom.com^",
+			},
+			expected: []string{
+				"||custom.com^",
+			},
 		},
 	}
 
@@ -206,6 +297,29 @@ func TestSyncService_SyncDomains(t *testing.T) {
 			},
 			expectError:       false,
 			expectedRuleCount: 5, // existing rule + start marker + 2 rules + end marker
+		},
+		{
+			name: "sync with wildcard domains",
+			client: &mockAdguardClient{
+				filteringStatus: &types.FilterStatus{
+					UserRules: []string{},
+				},
+			},
+			downloader: &mockDownloader{
+				domains: &types.CacheDomainsResponse{
+					CacheDomains: []types.CacheDomain{
+						{Name: "blizzard", DomainFiles: []string{"blizzard.txt"}},
+					},
+				},
+				domainsPaths: []string{"blizzard.txt"},
+				rewrites: []types.DNSRewrite{
+					{Domain: "*.cdn.blizzard.com", Answer: "192.168.1.1"},
+					{Domain: "cdn.blizzard.com", Answer: "192.168.1.1"},
+					{Domain: "dist.blizzard.com", Answer: "192.168.1.1"},
+				},
+			},
+			expectError:       false,
+			expectedRuleCount: 5, // start marker + 3 rules + end marker
 		},
 		{
 			name: "fetch domains fails",
@@ -340,6 +454,22 @@ func TestSyncService_updateFilteringRules(t *testing.T) {
 				"||another.com^",
 				startMarker,
 				"|new.com^$dnsrewrite=NOERROR;A;192.168.1.2,important",
+				endMarker,
+			},
+		},
+		{
+			name: "handle wildcard and exact domains",
+			existingRules: []string{},
+			rewrites: []types.DNSRewrite{
+				{Domain: "*.cdn.blizzard.com", Answer: "192.168.0.252"},
+				{Domain: "cdn.blizzard.com", Answer: "192.168.0.252"},
+				{Domain: "dist.blizzard.com", Answer: "192.168.0.252"},
+			},
+			expectedRules: []string{
+				startMarker,
+				"||cdn.blizzard.com^$dnsrewrite=NOERROR;A;192.168.0.252,important",
+				"|cdn.blizzard.com^$dnsrewrite=NOERROR;A;192.168.0.252,important",
+				"|dist.blizzard.com^$dnsrewrite=NOERROR;A;192.168.0.252,important",
 				endMarker,
 			},
 		},
