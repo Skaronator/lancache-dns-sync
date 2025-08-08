@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.1.3](https://github.com/Skaronator/lancache-dns-sync/compare/v0.1.2...v0.1.3) (2025-08-08)
+
+
+### Miscellaneous Chores
+
+* **deps:** Pin siderolabs/conform digest ([#15](https://github.com/Skaronator/lancache-dns-sync/issues/15)) ([7629b51](https://github.com/Skaronator/lancache-dns-sync/commit/7629b51783aa1cfba5461c0fc51511e7e05c5871))
+* **deps:** update github/codeql-action action to v3.29.6 ([#18](https://github.com/Skaronator/lancache-dns-sync/issues/18)) ([81257c0](https://github.com/Skaronator/lancache-dns-sync/commit/81257c048947aaebfe454c50062ac8ce2cded5ab))
+* **deps:** update github/codeql-action action to v3.29.7 ([#20](https://github.com/Skaronator/lancache-dns-sync/issues/20)) ([5ec4e7d](https://github.com/Skaronator/lancache-dns-sync/commit/5ec4e7d56df86605735c7c30d1b9bc946b3470a9))
+* **deps:** update github/codeql-action action to v3.29.8 ([#21](https://github.com/Skaronator/lancache-dns-sync/issues/21)) ([46ff2e7](https://github.com/Skaronator/lancache-dns-sync/commit/46ff2e7abc3ed2f8919572556ddb0cadaed17cd6))
+
 ## [0.1.2](https://github.com/Skaronator/lancache-dns-sync/compare/v0.1.1...v0.1.2) (2025-08-05)
 
 
