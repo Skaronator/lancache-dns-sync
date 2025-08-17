@@ -20,7 +20,8 @@ policies:
           - chore
           - test
           - docs
-          - no_type
+          - Merge branch
+          - Revert
         scopes:
           - release
           - deps
