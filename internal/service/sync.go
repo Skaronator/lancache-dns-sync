@@ -47,7 +47,7 @@ func (s *SyncService) SyncDomains(ctx context.Context) error {
 
 	slog.Info("Downloaded domain entries", "count", len(rewrites))
 
-	if err := s.updateFilteringRules(ctx, rewrites); err != nil {
+	if err := s.UpdateFilteringRules(ctx, rewrites); err != nil {
 		return fmt.Errorf("failed to update filtering rules: %w", err)
 	}
 
@@ -60,7 +60,7 @@ const (
 	endMarker   = "# lancache-dns-sync end"
 )
 
-func (s *SyncService) updateFilteringRules(ctx context.Context, rewrites []types.DNSRewrite) error {
+func (s *SyncService) UpdateFilteringRules(ctx context.Context, rewrites []types.DNSRewrite) error {
 	slog.Debug("updateFilteringRules called", "rewrite_count", len(rewrites))
 
 	status, err := s.client.GetFilteringStatus(ctx)
