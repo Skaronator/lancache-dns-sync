@@ -13,16 +13,6 @@ import (
 	"github.com/skaronator/lancache-dns-sync/internal/types"
 )
 
-type downloaderInterface interface {
-	FetchCacheDomains(ctx context.Context) (*types.CacheDomainsResponse, error)
-	GetServiceFilePaths(domains *types.CacheDomainsResponse, cfg *config.Config) []string
-	DownloadDomainsFromFiles(ctx context.Context, filePaths []string, lancacheServer string) ([]types.DNSRewrite, error)
-}
-
-type clientInterface interface {
-	GetFilteringStatus(ctx context.Context) (*types.FilterStatus, error)
-	SetFilteringRules(ctx context.Context, rules []string) error
-}
 
 
 func TestExtractNonManagedRules(t *testing.T) {
