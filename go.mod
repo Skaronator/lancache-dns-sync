@@ -1,3 +1,3 @@
 module github.com/skaronator/lancache-dns-sync
 
-go 1.24
+go 1.25
