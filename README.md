@@ -40,30 +40,28 @@ To start using Lancache DNS Sync, use the following docker-compose configuration
 Create a `docker-compose.yml` file:
 
 ```yaml
-version: '3.8'
-
 services:
   lancache-dns-sync:
     image: ghcr.io/skaronator/lancache-dns-sync:latest
     container_name: lancache-dns-sync
     restart: unless-stopped
     environment:
+      ADGUARD_API: http://adguard.local:3000
       ADGUARD_USERNAME: admin
       ADGUARD_PASSWORD: password
       LANCACHE_SERVER: 192.168.1.100
-      ADGUARD_API: http://adguard.local:3000
       SYNC_INTERVAL: 24h
       SERVICE_NAMES: '*'
 
   # Copied from: https://github.com/lancachenet/docker-compose/tree/master
-  monolithic:
+  lancache:
     image: lancachenet/monolithic:latest
+    container_name: lancache
     restart: unless-stopped
     ports:
       - 80:80/tcp
       - 443:443/tcp
     environment:
-      LANCACHE_IP: 192.168.1.100
       CACHE_MAX_AGE: 365d
       CACHE_INDEX_SIZE: 500m
       MIN_FREE_DISK: 100g
@@ -75,7 +73,7 @@ services:
 
 Then run:
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 #### Environment Variables

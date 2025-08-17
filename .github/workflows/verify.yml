@@ -11,7 +11,7 @@ on:
 permissions:
   contents: read
   pull-requests: read
-  packages: read
+  packages: write
   id-token: write
 
 env:
@@ -28,13 +28,12 @@ jobs:
           fetch-depth: 0
 
       - uses: siderolabs/conform@43d9fb6d85d5f01b391245805eefd258db160197 # v0.1.0-alpha.30
-
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-  lint_provider:
+  lint:
     runs-on: ubuntu-latest
-    name: Lint Provider
+    name: Lint Service
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
@@ -79,10 +78,6 @@ jobs:
     name: Lint Dockerfile
 
     steps:
-      - uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
-        with:
-          egress-policy: audit
-
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
         with:
           fetch-depth: 0
@@ -93,16 +88,12 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    name: Build Provider and Container
+    name: Build Service and Container
     needs:
-      - lint_provider
+      - lint
       - dockerfile_lint
       - test
     steps:
-      - uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
-        with:
-          egress-policy: audit
-
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           fetch-depth: 0
@@ -114,12 +105,32 @@ jobs:
       - uses: sigstore/cosign-installer@d58896d6a1865668819e1d91763c7751a165e159 # v3.9.2
       - uses: anchore/sbom-action/download-syft@da167eac915b4e86f08b264dbdbc867b61be6f0c # v0.20.5
 
-      - uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # v3.6.0
-      - uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
+      - run: git fetch --force --tags
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3.5.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: goreleaser/goreleaser-action@e435ccd777264be153ace6237001ef4d979d3a7a # v6.4.0
         with:
-          args: -p 3 release --snapshot --clean --skip=publish --timeout 60m0s
+          args: -p 3 release --snapshot --clean --timeout 60m0s
           version: latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push snapshot Docker images
+        run: |
+          echo "Listing Docker images built by goreleaser..."
+          docker images --format "{{.Repository}}:{{.Tag}}" | grep "SNAPSHOT"
+          
+          echo "Pushing all snapshot images..."
+          for image in $(docker images --format "{{.Repository}}:{{.Tag}}" | grep "SNAPSHOT"); do
+            echo "Pushing $image"
+            docker push "$image"
+          done
