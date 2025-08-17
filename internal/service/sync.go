@@ -84,15 +84,15 @@ func (s *SyncService) updateFilteringRules(ctx context.Context, rewrites []types
 	slog.Debug("Added start marker", "rules_so_far", len(newRules))
 
 	slog.Debug("Building rewrite rules", "total_rewrites", len(rewrites))
-	for i, rewrite := range rewrites {
+	for _, rewrite := range rewrites {
 		var rule string
 		if strings.HasPrefix(rewrite.Domain, "*.") {
 			// For wildcard domains, use || to match domain and all subdomains
 			domain := strings.TrimPrefix(rewrite.Domain, "*.")
-			rule = fmt.Sprintf("||%s^$dnsrewrite=NOERROR;A;%s,important", domain, rewrite.Answer)
+			rule = fmt.Sprintf("||%s^$dnsrewrite=%s", domain, rewrite.Answer)
 		} else {
 			// For exact domains, use | to match only that specific domain
-			rule = fmt.Sprintf("|%s^$dnsrewrite=NOERROR;A;%s,important", rewrite.Domain, rewrite.Answer)
+			rule = fmt.Sprintf("|%s^$dnsrewrite=%s", rewrite.Domain, rewrite.Answer)
 		}
 		newRules = append(newRules, rule)
 	}
