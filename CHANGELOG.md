@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/Skaronator/lancache-dns-sync/compare/v1.0.0...v1.0.1) (2025-09-10)
+
+
+### Miscellaneous Chores
+
+* **deps:** update github/codeql-action action to v3.30.3 ([#41](https://github.com/Skaronator/lancache-dns-sync/issues/41)) ([6df4ba1](https://github.com/Skaronator/lancache-dns-sync/commit/6df4ba1015d9d8483ef07790b29e0940c7bc0f43))
+
 ## [1.0.0](https://github.com/Skaronator/lancache-dns-sync/compare/v0.2.0...v1.0.0) (2025-09-09)
 
 
