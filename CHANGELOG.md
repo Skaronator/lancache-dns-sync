@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.0.3](https://github.com/Skaronator/lancache-dns-sync/compare/v1.0.2...v1.0.3) (2025-12-12)
+
+
+### Miscellaneous Chores
+
+* **deps:** update actions/checkout action to v6.0.1 ([#79](https://github.com/Skaronator/lancache-dns-sync/issues/79)) ([a6d85f1](https://github.com/Skaronator/lancache-dns-sync/commit/a6d85f1277877cda249654cbd7ae30fbdf26beec))
+* **deps:** update actions/checkout digest to 8e8c483 ([#78](https://github.com/Skaronator/lancache-dns-sync/issues/78)) ([52eb363](https://github.com/Skaronator/lancache-dns-sync/commit/52eb363a4220e9a69761443abfb610ab833b9796))
+* **deps:** update alpine docker tag to v3.23.0 ([#81](https://github.com/Skaronator/lancache-dns-sync/issues/81)) ([2b2fc01](https://github.com/Skaronator/lancache-dns-sync/commit/2b2fc017f8c4face13d66e947189ac91be790788))
+* **deps:** update anchore/sbom-action action to v0.20.11 ([#83](https://github.com/Skaronator/lancache-dns-sync/issues/83)) ([c4e0858](https://github.com/Skaronator/lancache-dns-sync/commit/c4e0858f1f21af7201dd1ce8e4cfe8308289acbf))
+* **deps:** update github/codeql-action action to v4.31.6 ([#76](https://github.com/Skaronator/lancache-dns-sync/issues/76)) ([1f33116](https://github.com/Skaronator/lancache-dns-sync/commit/1f3311696415527ea8e3057705ec24e01d19c93e))
+* **deps:** update github/codeql-action action to v4.31.7 ([#82](https://github.com/Skaronator/lancache-dns-sync/issues/82)) ([e43b5cd](https://github.com/Skaronator/lancache-dns-sync/commit/e43b5cdb6e48a9a69c3226efd2be9cb12125ef3a))
+* **deps:** update github/codeql-action action to v4.31.8 ([#84](https://github.com/Skaronator/lancache-dns-sync/issues/84)) ([634ef01](https://github.com/Skaronator/lancache-dns-sync/commit/634ef013aa569452c17f8160a6bf7eb03f7387f4))
+* **deps:** update golangci/golangci-lint-action action to v9.2.0 ([#80](https://github.com/Skaronator/lancache-dns-sync/issues/80)) ([1177257](https://github.com/Skaronator/lancache-dns-sync/commit/117725720883797d5f26397e208652899466834c))
+
 ## [1.0.2](https://github.com/Skaronator/lancache-dns-sync/compare/v1.0.1...v1.0.2) (2025-11-27)
 
 
