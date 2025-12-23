@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.0.4](https://github.com/Skaronator/lancache-dns-sync/compare/v1.0.3...v1.0.4) (2025-12-23)
+
+
+### Miscellaneous Chores
+
+* **deps:** update alpine docker tag to v3.23.2 ([#87](https://github.com/Skaronator/lancache-dns-sync/issues/87)) ([82eac1f](https://github.com/Skaronator/lancache-dns-sync/commit/82eac1fcd210d4ea4f97cd526ef29612904733a4))
+* **deps:** update anchore/sbom-action action to v0.21.0 ([#89](https://github.com/Skaronator/lancache-dns-sync/issues/89)) ([3619def](https://github.com/Skaronator/lancache-dns-sync/commit/3619def0d4ae70004381f694d32db71f34271720))
+* **deps:** update docker/setup-buildx-action action to v3.12.0 ([#88](https://github.com/Skaronator/lancache-dns-sync/issues/88)) ([79ff556](https://github.com/Skaronator/lancache-dns-sync/commit/79ff5561c04f655f08fb0ebc2b9754e153439228))
+* **deps:** update github/codeql-action action to v4.31.9 ([#85](https://github.com/Skaronator/lancache-dns-sync/issues/85)) ([bd9b45d](https://github.com/Skaronator/lancache-dns-sync/commit/bd9b45d9d8fd51810c5b057a2fe29d37cf18ea80))
+
 ## [1.0.3](https://github.com/Skaronator/lancache-dns-sync/compare/v1.0.2...v1.0.3) (2025-12-12)
 
 
