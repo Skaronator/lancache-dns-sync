@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.5](https://github.com/Skaronator/lancache-dns-sync/compare/v1.0.4...v1.0.5) (2026-01-13)
+
+
+### Miscellaneous Chores
+
+* **deps:** update actions/setup-go action to v6.2.0 ([#93](https://github.com/Skaronator/lancache-dns-sync/issues/93)) ([2f4d7ad](https://github.com/Skaronator/lancache-dns-sync/commit/2f4d7ad35f2bbf06672549c8c7b8cc15026a2716))
+* **deps:** update anchore/sbom-action action to v0.21.1 ([#90](https://github.com/Skaronator/lancache-dns-sync/issues/90)) ([e27dc9b](https://github.com/Skaronator/lancache-dns-sync/commit/e27dc9b7e787072c7864abe438cec3197f81856f))
+* **deps:** update github/codeql-action action to v4.31.10 ([#92](https://github.com/Skaronator/lancache-dns-sync/issues/92)) ([201f03c](https://github.com/Skaronator/lancache-dns-sync/commit/201f03cb5aaef2b6bba7d28e6c503ed3f0d90c0d))
+
 ## [1.0.4](https://github.com/Skaronator/lancache-dns-sync/compare/v1.0.3...v1.0.4) (2025-12-23)
 
 
