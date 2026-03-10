@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.6](https://github.com/Skaronator/lancache-dns-sync/compare/v1.0.5...v1.0.6) (2026-03-10)
+
+
+### Miscellaneous Chores
+
+* **deps:** update anchore/sbom-action action to v0.23.1 ([#117](https://github.com/Skaronator/lancache-dns-sync/issues/117)) ([581020b](https://github.com/Skaronator/lancache-dns-sync/commit/581020b01dbf9c7333880c043302761b47166dab))
+* **deps:** update dependency golangci/golangci-lint to v2.11.3 ([#120](https://github.com/Skaronator/lancache-dns-sync/issues/120)) ([5be0542](https://github.com/Skaronator/lancache-dns-sync/commit/5be05428e4d0148a1c1ebd0955a4791784ded565))
+* **deps:** update sigstore/cosign-installer action to v4.1.0 ([#118](https://github.com/Skaronator/lancache-dns-sync/issues/118)) ([6987e69](https://github.com/Skaronator/lancache-dns-sync/commit/6987e69c636113e66cf4a9383635350dc941b9de))
+
 ## [1.0.5](https://github.com/Skaronator/lancache-dns-sync/compare/v1.0.4...v1.0.5) (2026-03-08)
 
 
