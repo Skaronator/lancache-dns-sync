@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.0.6](https://github.com/Skaronator/lancache-dns-sync/compare/v1.0.5...v1.0.6) (2026-04-16)
+
+
+### Miscellaneous Chores
+
+* **deps:** update actions/setup-go action to v6.4.0 ([#123](https://github.com/Skaronator/lancache-dns-sync/issues/123)) ([3797f13](https://github.com/Skaronator/lancache-dns-sync/commit/3797f134aa9f0de6cd120c25a92ec228a23bf31f))
+* **deps:** update alpine docker tag to v3.23.4 ([#128](https://github.com/Skaronator/lancache-dns-sync/issues/128)) ([b1f5222](https://github.com/Skaronator/lancache-dns-sync/commit/b1f522290395d7367a2f2452887b18341ca1d14f))
+* **deps:** update anchore/sbom-action action to v0.23.1 ([#117](https://github.com/Skaronator/lancache-dns-sync/issues/117)) ([581020b](https://github.com/Skaronator/lancache-dns-sync/commit/581020b01dbf9c7333880c043302761b47166dab))
+* **deps:** update anchore/sbom-action action to v0.24.0 ([#124](https://github.com/Skaronator/lancache-dns-sync/issues/124)) ([612dcbb](https://github.com/Skaronator/lancache-dns-sync/commit/612dcbbbbfa1ea2952b1dfb370b8ddb8b83fe7ea))
+* **deps:** update dependency golangci/golangci-lint to v2.11.3 ([#120](https://github.com/Skaronator/lancache-dns-sync/issues/120)) ([5be0542](https://github.com/Skaronator/lancache-dns-sync/commit/5be05428e4d0148a1c1ebd0955a4791784ded565))
+* **deps:** update dependency golangci/golangci-lint to v2.11.4 ([#121](https://github.com/Skaronator/lancache-dns-sync/issues/121)) ([ec8d674](https://github.com/Skaronator/lancache-dns-sync/commit/ec8d674cb86d5bd5815ca0c38a4ea8077092bd8a))
+* **deps:** update docker/login-action action to v4.1.0 ([#126](https://github.com/Skaronator/lancache-dns-sync/issues/126)) ([f36418f](https://github.com/Skaronator/lancache-dns-sync/commit/f36418fc416defd78d1841399e621f8e2fbb485f))
+* **deps:** update github/codeql-action action to v4.35.1 ([#125](https://github.com/Skaronator/lancache-dns-sync/issues/125)) ([601bf64](https://github.com/Skaronator/lancache-dns-sync/commit/601bf64ac16b0260c43f2f7fb8e94305dcf46207))
+* **deps:** update github/codeql-action action to v4.35.2 ([#129](https://github.com/Skaronator/lancache-dns-sync/issues/129)) ([49cd2e8](https://github.com/Skaronator/lancache-dns-sync/commit/49cd2e8663dc491d710310d172ea1ebe7df273a4))
+* **deps:** update googleapis/release-please-action action to v4.4.1 ([#127](https://github.com/Skaronator/lancache-dns-sync/issues/127)) ([bc7c895](https://github.com/Skaronator/lancache-dns-sync/commit/bc7c895811de7efc0717748c5c003a29eadb0d08))
+* **deps:** update sigstore/cosign-installer action to v4.1.0 ([#118](https://github.com/Skaronator/lancache-dns-sync/issues/118)) ([6987e69](https://github.com/Skaronator/lancache-dns-sync/commit/6987e69c636113e66cf4a9383635350dc941b9de))
+* **deps:** update sigstore/cosign-installer action to v4.1.1 ([#122](https://github.com/Skaronator/lancache-dns-sync/issues/122)) ([b6ff4c7](https://github.com/Skaronator/lancache-dns-sync/commit/b6ff4c7e8e97129470d21034aa513fdb5a8d2d4a))
+
 ## [1.0.5](https://github.com/Skaronator/lancache-dns-sync/compare/v1.0.4...v1.0.5) (2026-03-08)
 
 
