@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.7](https://github.com/Skaronator/lancache-dns-sync/compare/v1.0.6...v1.0.7) (2026-04-29)
+
+
+### Miscellaneous Chores
+
+* **deps:** update goreleaser/goreleaser-action action to v7.1.0 ([#130](https://github.com/Skaronator/lancache-dns-sync/issues/130)) ([0d6b36f](https://github.com/Skaronator/lancache-dns-sync/commit/0d6b36f6755b84229e95a782d504a146bd1e706c))
+* **deps:** update goreleaser/goreleaser-action action to v7.2.1 ([#133](https://github.com/Skaronator/lancache-dns-sync/issues/133)) ([8a5684a](https://github.com/Skaronator/lancache-dns-sync/commit/8a5684a47b85efd54d65bb22b5298fe1ed9b809e))
+* **deps:** update siderolabs/conform action to v0.1.0-alpha.31 ([#134](https://github.com/Skaronator/lancache-dns-sync/issues/134)) ([1316d67](https://github.com/Skaronator/lancache-dns-sync/commit/1316d671e6893fa10026ba77be601f6800d9c847))
+
 ## [1.0.6](https://github.com/Skaronator/lancache-dns-sync/compare/v1.0.5...v1.0.6) (2026-04-16)
 
 
