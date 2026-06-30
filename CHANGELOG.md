@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.8](https://github.com/Skaronator/lancache-dns-sync/compare/v1.0.7...v1.0.8) (2026-06-30)
+
+
+### Miscellaneous Chores
+
+* **deps:** update actions/checkout action to v7 ([#155](https://github.com/Skaronator/lancache-dns-sync/issues/155)) ([7e8100a](https://github.com/Skaronator/lancache-dns-sync/commit/7e8100ab5c1626109c9070bb1fc976109252a909))
+* **deps:** update actions/setup-go action to v6.5.0 ([#156](https://github.com/Skaronator/lancache-dns-sync/issues/156)) ([ecfc7ae](https://github.com/Skaronator/lancache-dns-sync/commit/ecfc7ae23acc648b3df2063459eb21069ab5b9f6))
+* **deps:** update alpine docker tag to v3.24.1 ([#153](https://github.com/Skaronator/lancache-dns-sync/issues/153)) ([129575d](https://github.com/Skaronator/lancache-dns-sync/commit/129575dbe02705f318140d4f4b546eabf4210fca))
+* **deps:** update golangci/golangci-lint-action action to v9.3.0 ([#158](https://github.com/Skaronator/lancache-dns-sync/issues/158)) ([0f2f00a](https://github.com/Skaronator/lancache-dns-sync/commit/0f2f00aeec9c0bbb473a58a8a7a1b690b0c1a7d7))
+* **deps:** update goreleaser/goreleaser-action action to v7.2.3 ([#157](https://github.com/Skaronator/lancache-dns-sync/issues/157)) ([731e516](https://github.com/Skaronator/lancache-dns-sync/commit/731e5166144fc50fc9832534549d45cdd9b22ab2))
+
 ## [1.0.7](https://github.com/Skaronator/lancache-dns-sync/compare/v1.0.6...v1.0.7) (2026-06-10)
 
 
